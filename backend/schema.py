@@ -16,7 +16,6 @@ class LeadsSchema(BaseModel):
     email: EmailStr
     company: str
     id: UUID
-    engagementStage: int
 
     class Config:
         from_attributes = True
