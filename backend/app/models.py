@@ -1,4 +1,4 @@
-from app.database import BaseDBModel, SCHEMA
+from app.database import BaseDBModel
 from sqlalchemy import Column, Boolean, Integer, String, Date, DateTime, func
 
 
