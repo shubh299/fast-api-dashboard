@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy import asc, desc, and_
+from sqlalchemy import asc, desc, and_, or_
 from app.database import get_db_session
 from app.schema import (
     LeadCreateRequest,
@@ -47,27 +47,24 @@ class LeadsRepository:
     def get_leads(self, params: GetLeadsRequest) -> list[LeadSchema]:
         db_query = self.__db_session.query(Leads)
         if params.searchQuery:
-            db_query.filter(
-                [
+            db_query = db_query.filter(
+                or_(
                     Leads.name.ilike(f"%{params.searchQuery}%"),
                     Leads.email.ilike(f"%{params.searchQuery}%"),
                     Leads.email.ilike(f"%{params.searchQuery}%"),
-                ]
+                )
             )
-        if params.isEngaged is not None:
-            if params.isEngaged:
-                db_query.filter(Leads.engagementStage >= 0)
-            else:
-                db_query.filter(Leads.engagementStage == 0)
+        if params.engaged is not None:
+            db_query = db_query.filter(Leads.engaged == params.engaged)
 
         if params.sort_column:
-            db_query.order_by(
+            db_query = db_query.order_by(
                 asc(params.sort_column)
                 if params.sortOrder == SortOrder.ASC
                 else desc(params.sort_column)
             )
         else:
-            db_query.order_by(
+            db_query = db_query.order_by(
                 asc("id") if params.sortOrder == SortOrder.ASC else desc("id")
             )
 

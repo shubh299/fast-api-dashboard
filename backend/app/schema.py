@@ -35,7 +35,7 @@ class GetLeadsRequest(BaseModel):
     searchQuery: str | None = None
     start: int = 0  # start for pagination
     limit: int = 10  # page size
-    isEngaged: bool | None = None
+    engaged: bool | None = None
     sortBy: str | None = None
     sortOrder: SortOrder = SortOrder.ASC
 
