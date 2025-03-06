@@ -1,93 +1,64 @@
 from fastapi import FastAPI, Depends
-from app.database import get_db_session
-from app.models import Leads
+from fastapi.responses import JSONResponse
+from app.leads_repository import LeadsRepository
 from fastapi import HTTPException
 from app.schema import (
     LeadCreateRequest,
-    LeadsSchema,
+    LeadSchema,
     GetLeadsRequest,
-    SortOrder,
     UpdateLeadRequest,
 )
-from sqlalchemy import asc, desc
 from uuid import UUID
 
 app = FastAPI()
 
 
-@app.get("/leads", response_model=list[LeadsSchema])
+@app.get("/leads", response_model=list[LeadSchema])
 def get_leads(
     params: GetLeadsRequest = Depends(),
-    db_session=Depends(get_db_session),
+    leads_repository: LeadsRepository = Depends(LeadsRepository),
 ):
-    db_query = db_session.query(Leads)
-
-    if params.searchQuery:
-        db_query.filter(
-            [
-                Leads.name.ilike(f"%{params.searchQuery}%"),
-                Leads.email.ilike(f"%{params.searchQuery}%"),
-                Leads.email.ilike(f"%{params.searchQuery}%"),
-            ]
-        )
-    if params.isEngaged is not None:
-        if params.isEngaged:
-            db_query.filter(Leads.engagementStage >= 0)
-        else:
-            db_query.filter(Leads.engagementStage == 0)
-
-    if params.sort_column:
-        db_query.order_by(
-            asc(params.sort_column)
-            if params.sortOrder == SortOrder.ASC
-            else desc(params.sort_column)
-        )
-    else:
-        db_query.order_by(
-            asc("id") if params.sortOrder == SortOrder.ASC else desc("id")
-        )
-
-    return db_query.offset(params.start).limit(params.limit).all()
+    leads = leads_repository.get_leads(params)
+    return leads
 
 
-@app.post("/lead", response_model=LeadsSchema)
-def add_lead(lead: LeadCreateRequest, db_session=Depends(get_db_session)):
-    # checking if lead with email already exists
-    print(db_session)
-    email_exists = db_session.query(Leads).filter(Leads.email == lead.email).first()
+@app.post("/lead", response_model=LeadSchema)
+def add_lead(
+    lead: LeadCreateRequest,
+    leads_repository: LeadsRepository = Depends(LeadsRepository),
+):
+    # checking if lead with email already exists, then return 404
+    email_exists = leads_repository.get_lead_by_email(lead.email)
     if email_exists:
         raise HTTPException(status_code=400, detail="email already exists")
-    new_lead = Leads(**lead.model_dump())
-    db_session.add(new_lead)
-    db_session.commit()
+    new_lead = leads_repository.create_lead(lead)
     return new_lead
 
 
-@app.patch("/update_lead/{lead_id}", response_model=LeadsSchema)
+@app.patch("/update_lead/{lead_id}")
 def update_lead(
-    lead_id: UUID, update_params: UpdateLeadRequest, db_session=Depends(get_db_session)
+    lead_id: UUID,
+    update_params: UpdateLeadRequest,
+    leads_repository: LeadsRepository = Depends(LeadsRepository),
 ):
-    lead = db_session.query(Leads).filter(Leads.id == lead_id).first()
+    lead = leads_repository.get_lead_by_id(lead_id)
     if not lead:
         raise HTTPException(status_code=404, detail="lead not found")
 
     if update_params.email:
-        email_exists = db_session.query(Leads).filter(Leads.email == lead.email).first()
-        if email_exists:
-            raise HTTPException(status_code=400, detail="email already exists")
+        lead = leads_repository.get_lead_by_email(update_params.email)
+        if lead and lead.id != lead_id:
+            return HTTPException(status_code=400, detail={"email already exists"})
 
-    update_data = update_params.model_dump(exclude_unset=True)
-    db_session.query(Leads).filter(Leads.id == lead_id).update(update_data)
-    db_session.commit()
-
-    return db_session.query(Leads).filter(Leads.id == lead_id).first()
+    return leads_repository.update_lead(lead_id, update_params)
 
 
-@app.delete("delete_lead/{lead_id}")
-def delete_lead(lead_id: UUID, db_session=Depends(get_db_session)):
-    lead = db_session.query(Leads).filter(Leads.id == lead_id).first()
-    if not lead:
+@app.delete("/delete_lead/{lead_id}")
+def delete_lead(
+    lead_id: UUID, leads_repository: LeadsRepository = Depends(LeadsRepository)
+):
+    delete_result = leads_repository.delete_lead_by_id(lead_id)
+    if delete_result:
+        return JSONResponse(content="lead deleted successfully", status_code=200)
+    else:
         return HTTPException(status_code=404, detail={"lead not found"})
-    db_session.delete(lead)
-    db_session.commit()
-    return

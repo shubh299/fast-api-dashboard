@@ -13,7 +13,7 @@ class LeadCreateRequest(BaseModel):
     stage: int = 0
 
 
-class LeadsSchema(BaseModel):
+class LeadSchema(BaseModel):
     id: UUID
     name: str
     email: EmailStr
