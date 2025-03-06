@@ -5,7 +5,7 @@ import uuid
 
 
 class Leads(BaseModel):
-    __tablename__ = "leads" 
+    __tablename__ = "leads"
     __table_args__ = {"schema": SCHEMA}
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String)
