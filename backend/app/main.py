@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from app.leads_repository import LeadsRepository
 from fastapi import HTTPException
 from app.schema import (
@@ -8,6 +8,8 @@ from app.schema import (
     GetLeadsRequest,
     UpdateLeadRequest,
 )
+import io
+import csv
 from uuid import UUID
 
 app = FastAPI()
@@ -62,3 +64,24 @@ def delete_lead(
         return JSONResponse(content="lead deleted successfully", status_code=200)
     else:
         return HTTPException(status_code=404, detail={"lead not found"})
+
+
+@app.get("/export_leads/")
+def export_leads(leads_repository: LeadsRepository = Depends(LeadsRepository)):
+    leads = leads_repository.get_all_leads()
+
+    output = io.StringIO()
+    writer = csv.DictWriter(
+        output,
+        fieldnames=["name", "email", "company", "engaged", "stage", "lastContacted"],
+    )
+
+    writer.writeheader()
+    writer.writerows([lead.model_dump(exclude={"id"}) for lead in leads])
+
+    output.seek(0)
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=leads.csv"},
+    )

@@ -92,3 +92,9 @@ class LeadsRepository:
         self.__db_session.query(Leads).filter(Leads.id == lead_id).update(update_data)
         self.__db_session.commit()
         return self.get_lead_by_id(lead_id)
+
+    def get_all_leads(self) -> list[LeadSchema]:
+        return [
+            LeadSchema.model_validate(lead)
+            for lead in self.__db_session.query(Leads).all()
+        ]
