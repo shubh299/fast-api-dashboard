@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from app.database import get_db_session, create_tables
+from app.database import get_db_session
 from app.models import Leads
 from fastapi import HTTPException
 from app.schema import (
@@ -11,8 +11,6 @@ from app.schema import (
 )
 from sqlalchemy import asc, desc
 from uuid import UUID
-
-create_tables()
 
 app = FastAPI()
 
