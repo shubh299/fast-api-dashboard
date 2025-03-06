@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from app.database import get_db_session
+from app.database import get_db_session, create_tables
 from app.models import Leads
 from fastapi import HTTPException
 from app.schema import (
@@ -11,6 +11,8 @@ from app.schema import (
 )
 from sqlalchemy import asc, desc
 from uuid import UUID
+
+create_tables()
 
 app = FastAPI()
 
@@ -81,3 +83,13 @@ def update_lead(
     db_session.commit()
 
     return db_session.query(Leads).filter(Leads.id == lead_id).first()
+
+
+@app.delete("delete_lead/{lead_id}")
+def delete_lead(lead_id: UUID, db_session=Depends(get_db_session)):
+    lead = db_session.query(Leads).filter(Leads.id == lead_id).first()
+    if not lead:
+        return HTTPException(status_code=404, detail={"lead not found"})
+    db_session.delete(lead)
+    db_session.commit()
+    return

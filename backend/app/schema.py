@@ -1,3 +1,4 @@
+from uuid import UUID
 from pydantic import BaseModel, EmailStr
 from enum import Enum
 from app.models import Leads
@@ -13,7 +14,7 @@ class LeadCreateRequest(BaseModel):
 
 
 class LeadsSchema(BaseModel):
-    id: int
+    id: UUID
     name: str
     email: EmailStr
     company: str
