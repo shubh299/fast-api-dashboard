@@ -1,21 +1,25 @@
-from pydantic import BaseModel, EmailStr, Field
-from uuid import UUID
+from pydantic import BaseModel, EmailStr
 from enum import Enum
-from models import Leads
+from app.models import Leads
+from datetime import date
 
 
 class LeadCreateRequest(BaseModel):
     name: str
     email: EmailStr
     company: str
-    engagementStage: int = Field(default=0)
+    engaged: bool = False
+    stage: int = 0
 
 
 class LeadsSchema(BaseModel):
+    id: int
     name: str
     email: EmailStr
     company: str
-    id: UUID
+    engaged: int
+    stage: int
+    lastContacted: date | None
 
     class Config:
         from_attributes = True
@@ -39,3 +43,12 @@ class GetLeadsRequest(BaseModel):
         if self.sortBy:
             return getattr(Leads, self.sortBy)
         return None
+
+
+class UpdateLeadRequest(BaseModel):
+    name: str | None = None
+    email: EmailStr | None = None
+    company: str | None = None
+    stage: int | None = None
+    lastContacted: date | None = None
+    isEngaged: bool | None = None
