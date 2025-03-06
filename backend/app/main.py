@@ -15,6 +15,11 @@ from uuid import UUID
 app = FastAPI()
 
 
+@app.get("/health")
+def health_check():
+    return JSONResponse(status_code=200, content={"status": "ok"})
+
+
 @app.get("/leads", response_model=list[LeadSchema])
 def get_leads(
     params: GetLeadsRequest = Depends(),
