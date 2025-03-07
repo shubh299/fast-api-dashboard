@@ -1,38 +1,42 @@
 import { useEffect, useState } from "react";
 import LeadRow from "./LeadRow";
+import { get_leads } from "../apiService";
+import ReactPaginate from "react-paginate";
+import LeftPage from "./assets/chevron-left.svg";
+import RightPage from "./assets/chevron-right.svg";
 
 function LeadsTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const ROWS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [currentRows, setCurrentRows] = useState([]);
 
-  const data = Array.from({ length: 25 }, (_, i) => ({
-    id: i + 1,
-    name: "a" + i,
-    email: "b@a.com" + i,
-    company: "company" + i,
-    engaged: i % 2,
-    stage: i % 4,
-    lastContacted: i % 2 ? Date.now() : null,
-  }));
+  const getData = async (pageNumber) => {
+    const leads = await get_leads(pageNumber * pageSize, pageSize);
+    setTotalPages(Math.ceil(leads.totalCount / pageSize));
+    setCurrentRows(leads.data);
+  };
 
   useEffect(() => {
-    setCurrentRows(data.slice(0, 10));
+    getData(0);
   }, []);
+
+  useEffect(() => {
+    getData(currentPage);
+  }, [currentPage, pageSize]);
 
   return (
     <div>
-      <div className="CountStats">Showing count</div>
-      <table cellPadding="10" className="LeadTable">
+      <div className="count-stats">Showing count</div>
+      <table cellPadding="10" className="lead-table">
         <thead>
-          <tr className="LeadTableRows">
-            <th className="LeadTableHeaders">Name</th>
-            <th className="LeadTableHeaders">Company</th>
-            <th className="LeadTableHeaders">Stage</th>
-            <th className="LeadTableHeaders">Engaged</th>
-            <th className="LeadTableHeaders">Last Contacted</th>
-            <th className="LeadTableHeaders"></th>
+          <tr className="lead-table-rows">
+            <th className="lead-table-headers">Name</th>
+            <th className="lead-table-headers">Company</th>
+            <th className="lead-table-headers">Stage</th>
+            <th className="lead-table-headers">Engaged</th>
+            <th className="lead-table-headers">Last Contacted</th>
+            <th className="lead-table-headers"></th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +45,39 @@ function LeadsTable() {
           ))}
         </tbody>
       </table>
+      <ReactPaginate
+        previousLabel={
+          <button
+            className={`page-nav-item ${
+              currentPage === 0 ? ".page-nav-item-disabled" : ""
+            }`}
+            disabled={currentPage === 0}
+          >
+            <img src={LeftPage} alt="<" />
+          </button>
+        }
+        nextLabel={
+          <button
+            className={`page-nav-item ${
+              currentPage === totalPages ? ".page-nav-item-disabled" : ""
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            <img src={RightPage} alt="<" />
+          </button>
+        }
+        breakLabel="..."
+        pageCount={totalPages}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={3}
+        onPageChange={(elem) => setCurrentPage(elem.selected)}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+        pageClassName={"page-item"}
+        previousClassName={"prev-item"}
+        nextClassName={"next-item"}
+        breakClassName={"page-item break-nav-item"}
+      />
     </div>
   );
 }

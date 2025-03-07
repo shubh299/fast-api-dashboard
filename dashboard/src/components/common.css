@@ -1,17 +1,17 @@
-.Header {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
 }
 
-.HeaderButtonsGroup {
+.header-buttons-group {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.Button {
+.button {
   padding: 10px;
   align-items: center;
   font-weight: bold;
@@ -25,24 +25,24 @@
   font-size: 15px;
 }
 
-.ExportButton {
-  background-color: blueviolet;
+.export-button {
+  background-color: #8a2be2;
   color: #ffffff;
 }
 
-.InvertIconColor {
+.invert-icon-color {
   filter: invert(1);
 }
 
-.SearchDiv {
+.search-div {
   display: flex;
   align-items: center;
   gap: 5px;
   padding-bottom: 10px;
 }
 
-.SearchBar,
-.SearchBar:focus {
+.search-bar,
+.search-bar:focus {
   flex-grow: 1;
   font-size: 15px;
   padding: 9px;
@@ -52,11 +52,11 @@
   outline: none;
 }
 
-.CountStats {
+.count-stats {
   margin-top: 10px;
 }
 
-.LeadTable {
+.lead-table {
   width: 100%;
   background-color: #ffffff;
   text-align: left;
@@ -65,34 +65,75 @@
   border-collapse: collapse;
 }
 
-.LeadTableHeaders {
+.lead-table-headers {
   color: grey;
   font-weight: normal;
 }
 
-.LeadTableRows {
+.lead-table-rows {
   border-bottom: 1px solid #eee;
 }
 
-.Name {
+.name {
   font-size: 16px;
   font-weight: normal;
 }
 
-.StageBar {
+.stage-bar {
   width: 8px;
   height: 30px;
   border-radius: 10px;
 }
 
-.Engaged {
+.engaged {
   padding: 4px 8px;
   border-radius: 10px;
   font-size: 14px;
   /* display: inline-block; */
 }
 
-.ActionDots {
+.action-dots {
   cursor: pointer;
   font-size: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-top: 0;
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+}
+
+.page-item {
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.active {
+  background-color: #8a2be2;
+  color: white;
+  font-weight: bold;
+}
+
+.page-nav-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  border-radius: 6px;
+  height: 100%;
+}
+
+.page-nav-item-disabled {
+  cursor: default;
+}
+
+.break-nav-item {
+  border: 0;
 }

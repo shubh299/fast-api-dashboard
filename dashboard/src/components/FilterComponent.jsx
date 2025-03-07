@@ -5,14 +5,14 @@ function FilterComponent(props) {
     console.log(queryInput.target.value);
   };
   return (
-    <div className="SearchDiv">
+    <div className="search-div">
       <input
         type="text"
         placeholder="Search by lead's name, email or company name"
-        className="SearchBar"
+        className="search-bar"
         onChange={handleSearchQuery}
       />
-      <button className="Button">
+      <button className="button">
         <img src={FilterIcon} alt="" />
         Filter & Sort
       </button>

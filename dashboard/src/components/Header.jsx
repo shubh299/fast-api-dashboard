@@ -4,15 +4,15 @@ import AddIcon from "./assets/plus-lg.svg";
 
 function Header() {
   return (
-    <div className="Header">
+    <div className="header">
       <h1>Leads</h1>
-      <div className="HeaderButtonsGroup">
-        <button className="Button">
+      <div className="header-buttons-group">
+        <button className="button">
           <img src={AddIcon} alt="" />
           Add Lead
         </button>
-        <button className="Button ExportButton">
-          <img src={DownloadIcon} alt="" className="InvertIconColor" />
+        <button className="button export-button">
+          <img src={DownloadIcon} alt="" className="invert-icon-color" />
           Export All
         </button>
       </div>

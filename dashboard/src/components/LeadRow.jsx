@@ -4,9 +4,8 @@ import ProfileCircle from "./assets/person-circle.svg";
 
 function LeadRow(rowData) {
   const row = rowData.row;
-  //   console.log(rowData.row.name, rowData.row.email, rowData.row);
   return (
-    <tr className="LeadTableRows">
+    <tr className="lead-table-rows">
       <td width="30%">
         <ProfileCard
           imageSrc={ProfileCircle}
@@ -14,15 +13,15 @@ function LeadRow(rowData) {
           email={row.email}
         />
       </td>
-      <td width="20%" className="Name">
+      <td width="20%" className="name">
         {row.company}
       </td>
       <td width="10%">
         <div style={{ display: "flex", gap: "5px", justifyContent: "left" }}>
-          {[...Array(4)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="StageBar"
+              className="stage-bar"
               style={{
                 backgroundColor: i < row.stage ? "#7D3CFC" : "#E0E0E0",
               }}
@@ -32,7 +31,7 @@ function LeadRow(rowData) {
       </td>
       <td>
         <span
-          className="Engaged"
+          className="engaged"
           style={{
             backgroundColor: row.engaged ? "#E0F7E9" : "#F0F0F0",
             color: row.engaged ? "#009688" : "#666",
@@ -41,9 +40,17 @@ function LeadRow(rowData) {
           {row.engaged ? "Engaged" : "Not Engaged"}
         </span>
       </td>
-      <td></td>
       <td>
-        <span className="ActionDots">⋮</span>
+        {row.lastContacted
+          ? new Date(row.lastContacted).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : "-"}
+      </td>
+      <td>
+        <span className="action-dots">⋮</span>
       </td>
     </tr>
   );

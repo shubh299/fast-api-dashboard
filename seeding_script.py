@@ -3,12 +3,18 @@ import json
 from faker import Faker
 import random
 import sys
+from datetime import date
+
+START_DATE = date(2025, 1, 1)
+END_DATE = date(2025, 3, 1)
 
 
 def seed_leads(num_leads: int):
     fake = Faker()
     add_lead_url = "http://127.0.0.1:8000/lead"
-    for _ in range(num_leads):
+    update_lead_url = "http://127.0.0.1:8000/update_lead/"
+
+    for i in range(num_leads):
         data = {
             "name": fake.name(),
             "email": fake.email(),
@@ -18,6 +24,17 @@ def seed_leads(num_leads: int):
         }
         response = requests.post(add_lead_url, json.dumps(data))
         print(response.status_code, response.content, data)
+
+        # populating last connected for half of the inputs
+        if i & 1:
+            created_id = json.loads(response.content)["id"]
+            data = {
+                "lastContacted": fake.date_between(START_DATE, END_DATE).strftime(
+                    "%Y-%m-%d"
+                )
+            }
+            response = requests.patch(update_lead_url + created_id, json.dumps(data))
+            print(response.status_code, response.content, data)
 
 
 leads_count = int(sys.argv[1] or 147)  # defaulting to 147 count
