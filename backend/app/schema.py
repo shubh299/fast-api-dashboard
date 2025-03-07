@@ -59,4 +59,4 @@ class UpdateLeadRequest(BaseModel):
     company: str | None = None
     stage: int | None = None
     lastContacted: date | None = None
-    isEngaged: bool | None = None
+    engaged: bool | None = None

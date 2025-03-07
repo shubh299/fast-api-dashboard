@@ -63,6 +63,7 @@ def update_lead(
     update_params: UpdateLeadRequest,
     leads_repository: LeadsRepository = Depends(LeadsRepository),
 ):
+    print(update_params)
     lead = leads_repository.get_lead_by_id(lead_id)
     if not lead:
         raise HTTPException(status_code=404, detail="lead not found")
