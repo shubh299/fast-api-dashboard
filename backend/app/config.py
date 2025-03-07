@@ -9,7 +9,8 @@ if ENVIRONMENT == "development":
 
 
 class Settings:
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "")
 
 
 settings = Settings()

@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
 from app.leads_repository import LeadsRepository
 from fastapi import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from app.schema import (
     LeadCreateRequest,
     LeadSchema,
@@ -9,11 +10,21 @@ from app.schema import (
     GetLeadsRequest,
     UpdateLeadRequest,
 )
+from app.config import settings
 import io
 import csv
 from uuid import UUID
 
 app = FastAPI()
+
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.FRONTEND_URL],  # Allow frontend, configured from URL
+    allow_credentials=True,  # Allow cookies
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 @app.get("/health")
