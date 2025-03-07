@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LeadRow from "./LeadRow";
 
 function LeadsTable() {
@@ -17,30 +17,30 @@ function LeadsTable() {
     lastContacted: i % 2 ? Date.now() : null,
   }));
 
-  //   setCurrentRows(data.slice(0, 10));
+  useEffect(() => {
+    setCurrentRows(data.slice(0, 10));
+  }, []);
 
   return (
     <div>
-      <div>Showing count</div>
-      <div>
-        <table cellPadding="10" className="LeadTable">
-          <thead className="LeadTableHead">
-            <tr>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Stage</th>
-              <th>Engaged</th>
-              <th>Last Contacted</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRows.map((row) => (
-              <LeadRow key={row.id} row={row} />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="CountStats">Showing count</div>
+      <table cellPadding="10" className="LeadTable">
+        <thead>
+          <tr className="LeadTableRows">
+            <th className="LeadTableHeaders">Name</th>
+            <th className="LeadTableHeaders">Company</th>
+            <th className="LeadTableHeaders">Stage</th>
+            <th className="LeadTableHeaders">Engaged</th>
+            <th className="LeadTableHeaders">Last Contacted</th>
+            <th className="LeadTableHeaders"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentRows.map((row) => (
+            <LeadRow key={row.id} row={row} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

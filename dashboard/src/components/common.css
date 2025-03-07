@@ -52,13 +52,47 @@
   outline: none;
 }
 
+.CountStats {
+  margin-top: 10px;
+}
+
 .LeadTable {
   width: 100%;
   background-color: #ffffff;
   text-align: left;
-  border-radius: 7px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border-collapse: collapse;
 }
 
-.LeadTableHead {
+.LeadTableHeaders {
   color: grey;
+  font-weight: normal;
+}
+
+.LeadTableRows {
+  border-bottom: 1px solid #eee;
+}
+
+.Name {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.StageBar {
+  width: 8px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+.Engaged {
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 14px;
+  /* display: inline-block; */
+}
+
+.ActionDots {
+  cursor: pointer;
+  font-size: 20px;
 }
