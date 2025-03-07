@@ -29,7 +29,6 @@ function LeadsTable() {
     sortColumn,
     sortOrder
   ) => {
-    console.log("getData", searchQuery);
     const leads = await get_leads(
       pageNumber * pageSize,
       pageSize,
