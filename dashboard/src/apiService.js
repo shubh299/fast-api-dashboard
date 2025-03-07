@@ -40,3 +40,8 @@ export const get_leads = async (
   const repsonse = await api.get(`leads/?${queryParams.toString()}`);
   return repsonse.data;
 };
+
+export const export_all_leads = async () => {
+  const response = await api.get("export_leads/", { responseType: "blob" });
+  return response.data;
+};
