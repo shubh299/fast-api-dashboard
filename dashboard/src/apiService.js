@@ -16,6 +16,7 @@ export const get_leads = async (
   start,
   pageSize,
   searchQuery,
+  engagedFilter,
   sortColumn,
   sortOrder
 ) => {
@@ -26,8 +27,11 @@ export const get_leads = async (
   if (searchQuery != null) {
     queryParams.append("searchQuery", searchQuery);
   }
+  if (engagedFilter != null) {
+    queryParams.append("engaged", engagedFilter);
+  }
   if (sortColumn != null) {
-    queryParams.append("sortColumn", sortColumn);
+    queryParams.append("sortBy", sortColumn);
     if (sortOrder != null) {
       queryParams.append("sortOrder", sortOrder);
     }

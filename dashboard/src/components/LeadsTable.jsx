@@ -13,14 +13,22 @@ function LeadsTable() {
   const [currentRows, setCurrentRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
 
-  const { searchQuery } = useContext(SearchContext);
+  const { searchQuery, engagedFilter, sortColumn, sortOrder } =
+    useContext(SearchContext);
 
-  const getData = async (pageNumber, searchQuery, sortColumn, sortOrder) => {
+  const getData = async (
+    pageNumber,
+    searchQuery,
+    engagedFilter,
+    sortColumn,
+    sortOrder
+  ) => {
     console.log("getData", searchQuery);
     const leads = await get_leads(
       pageNumber * pageSize,
       pageSize,
       searchQuery,
+      engagedFilter,
       sortColumn,
       sortOrder
     );
@@ -34,8 +42,15 @@ function LeadsTable() {
   }, []);
 
   useEffect(() => {
-    getData(currentPage, searchQuery);
-  }, [currentPage, pageSize, searchQuery]);
+    getData(currentPage, searchQuery, engagedFilter, sortColumn, sortOrder);
+  }, [
+    currentPage,
+    pageSize,
+    searchQuery,
+    engagedFilter,
+    sortOrder,
+    sortColumn,
+  ]);
 
   return (
     <div>
