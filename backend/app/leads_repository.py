@@ -44,7 +44,10 @@ class LeadsRepository:
         self.__db_session.commit()
         return result
 
-    def get_leads(self, params: GetLeadsRequest) -> list[LeadSchema]:
+    def get_leads(self, params: GetLeadsRequest) -> tuple[list[LeadSchema], int]:
+        """
+        Returns list of leads and total count of leads for the filter
+        """
         db_query = self.__db_session.query(Leads)
         if params.searchQuery:
             db_query = db_query.filter(
@@ -69,7 +72,8 @@ class LeadsRepository:
             )
 
         leads = db_query.offset(params.start).limit(params.limit).all()
-        return [LeadSchema.model_validate(lead) for lead in leads]
+        leads_count = db_query.count()
+        return [LeadSchema.model_validate(lead) for lead in leads], leads_count
 
     def update_lead(
         self, lead_id: UUID, update_params: UpdateLeadRequest

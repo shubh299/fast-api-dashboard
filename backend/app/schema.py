@@ -46,6 +46,13 @@ class GetLeadsRequest(BaseModel):
         return None
 
 
+class GetLeadsResponse(BaseModel):
+    data: list[LeadSchema]
+    start: int
+    end: int
+    totalCount: int
+
+
 class UpdateLeadRequest(BaseModel):
     name: str | None = None
     email: EmailStr | None = None

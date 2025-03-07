@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from app.schema import (
     LeadCreateRequest,
     LeadSchema,
+    GetLeadsResponse,
     GetLeadsRequest,
     UpdateLeadRequest,
 )
@@ -20,13 +21,16 @@ def health_check():
     return JSONResponse(status_code=200, content={"status": "ok"})
 
 
-@app.get("/leads", response_model=list[LeadSchema])
-def get_leads(
+@app.get("/leads", response_model=GetLeadsResponse)
+def get_leads_paginated(
     params: GetLeadsRequest = Depends(),
     leads_repository: LeadsRepository = Depends(LeadsRepository),
 ):
-    leads = leads_repository.get_leads(params)
-    return leads
+    leads, count = leads_repository.get_leads(params)
+    response = GetLeadsResponse(
+        data=leads, totalCount=count, start=params.start, end=params.start + len(leads)
+    )
+    return response
 
 
 @app.post("/lead", response_model=LeadSchema)
