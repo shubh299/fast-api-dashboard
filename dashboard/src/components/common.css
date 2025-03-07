@@ -1,0 +1,64 @@
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.HeaderButtonsGroup {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.Button {
+  padding: 10px;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 10px;
+  border-width: 1pt;
+  border-color: antiquewhite;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #ffffff;
+  font-size: 15px;
+}
+
+.ExportButton {
+  background-color: blueviolet;
+  color: #ffffff;
+}
+
+.InvertIconColor {
+  filter: invert(1);
+}
+
+.SearchDiv {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-bottom: 10px;
+}
+
+.SearchBar,
+.SearchBar:focus {
+  flex-grow: 1;
+  font-size: 15px;
+  padding: 9px;
+  border-radius: 7px;
+  border-width: thin;
+  border-color: beige;
+  outline: none;
+}
+
+.LeadTable {
+  width: 100%;
+  background-color: #ffffff;
+  text-align: left;
+  border-radius: 7px;
+}
+
+.LeadTableHead {
+  color: grey;
+}
