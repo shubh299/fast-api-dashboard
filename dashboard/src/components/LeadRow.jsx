@@ -13,10 +13,8 @@ function LeadRow(rowData) {
   const { setLeadUpdated } = useContext(SearchContext);
 
   const handleUpdateLead = (lead) => {
-    console.log("Updated Lead:", lead, row.id);
     update_lead(row.id, lead)
       .then((response) => {
-        console.log(response);
         setLeadUpdated(true);
       })
       .catch((err) => {

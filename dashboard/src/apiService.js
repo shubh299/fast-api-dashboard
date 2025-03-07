@@ -36,7 +36,6 @@ export const get_leads = async (
       queryParams.append("sortOrder", sortOrder);
     }
   }
-  console.log("get_leads", queryParams, queryParams.toString());
   const repsonse = await api.get(`leads?${queryParams.toString()}`);
   return repsonse.data;
 };
@@ -62,7 +61,6 @@ export const delete_lead = async (lead_id) => {
 };
 
 export const update_lead = async (lead_id, params) => {
-  console.log("update params", params);
   const response = await api.patch(`update_lead/${lead_id}`, { ...params });
   return response.data;
 };

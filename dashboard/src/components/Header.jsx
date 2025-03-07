@@ -9,7 +9,6 @@ function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleExportAll = () => {
-    console.log("handle export all");
     export_all_leads()
       .then((response) => {
         const url = window.URL.createObjectURL(new Blob([response]));
