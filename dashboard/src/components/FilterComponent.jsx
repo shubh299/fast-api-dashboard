@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import FilterIcon from "./assets/filter.svg";
+import { SearchContext } from "../SearchContext";
 
-function FilterComponent(props) {
+function FilterComponent() {
+  const { setSearchQuery } = useContext(SearchContext);
   const handleSearchQuery = (queryInput) => {
-    console.log(queryInput.target.value);
+    setSearchQuery(queryInput.target.value);
   };
   return (
     <div className="search-div">

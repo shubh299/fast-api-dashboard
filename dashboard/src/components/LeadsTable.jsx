@@ -1,20 +1,32 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LeadRow from "./LeadRow";
 import { get_leads } from "../apiService";
 import ReactPaginate from "react-paginate";
 import LeftPage from "./assets/chevron-left.svg";
 import RightPage from "./assets/chevron-right.svg";
+import { SearchContext } from "../SearchContext";
 
 function LeadsTable() {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [currentRows, setCurrentRows] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
 
-  const getData = async (pageNumber) => {
-    const leads = await get_leads(pageNumber * pageSize, pageSize);
+  const { searchQuery } = useContext(SearchContext);
+
+  const getData = async (pageNumber, searchQuery, sortColumn, sortOrder) => {
+    console.log("getData", searchQuery);
+    const leads = await get_leads(
+      pageNumber * pageSize,
+      pageSize,
+      searchQuery,
+      sortColumn,
+      sortOrder
+    );
     setTotalPages(Math.ceil(leads.totalCount / pageSize));
     setCurrentRows(leads.data);
+    setTotalRows(leads.totalCount);
   };
 
   useEffect(() => {
@@ -22,12 +34,15 @@ function LeadsTable() {
   }, []);
 
   useEffect(() => {
-    getData(currentPage);
-  }, [currentPage, pageSize]);
+    getData(currentPage, searchQuery);
+  }, [currentPage, pageSize, searchQuery]);
 
   return (
     <div>
-      <div className="count-stats">Showing count</div>
+      <div className="count-stats">
+        Showing {currentPage * pageSize + 1} - {(currentPage + 1) * pageSize} of{" "}
+        {totalRows} leads
+      </div>
       <table cellPadding="10" className="lead-table">
         <thead>
           <tr className="lead-table-rows">

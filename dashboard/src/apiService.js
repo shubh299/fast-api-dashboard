@@ -24,14 +24,15 @@ export const get_leads = async (
     limit: pageSize,
   });
   if (searchQuery != null) {
-    queryParams.searchQuery = searchQuery;
+    queryParams.append("searchQuery", searchQuery);
   }
   if (sortColumn != null) {
-    queryParams.sortColumn = sortColumn;
+    queryParams.append("sortColumn", sortColumn);
     if (sortOrder != null) {
-      queryParams.sortOrder = sortOrder;
+      queryParams.append("sortOrder", sortOrder);
     }
   }
-  const repsonse = await api.get(`leads/?${queryParams}`);
+  console.log("get_leads", queryParams, queryParams.toString());
+  const repsonse = await api.get(`leads/?${queryParams.toString()}`);
   return repsonse.data;
 };

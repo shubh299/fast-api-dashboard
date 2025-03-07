@@ -51,9 +51,10 @@
   border-color: beige;
   outline: none;
 }
-
 .count-stats {
   margin-top: 10px;
+  font-size: medium;
+  color: #808080;
 }
 
 .lead-table {
