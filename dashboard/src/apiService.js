@@ -37,11 +37,32 @@ export const get_leads = async (
     }
   }
   console.log("get_leads", queryParams, queryParams.toString());
-  const repsonse = await api.get(`leads/?${queryParams.toString()}`);
+  const repsonse = await api.get(`leads?${queryParams.toString()}`);
   return repsonse.data;
 };
 
 export const export_all_leads = async () => {
   const response = await api.get("export_leads/", { responseType: "blob" });
+  return response.data;
+};
+
+export const add_lead = async (name, email, company, stage) => {
+  const response = await api.post("lead", {
+    name: name,
+    email: email,
+    company: company,
+    stage: stage,
+  });
+  return response.data;
+};
+
+export const delete_lead = async (lead_id) => {
+  const response = await api.delete(`delete_lead/${lead_id}`);
+  return response.data;
+};
+
+export const update_lead = async (lead_id, params) => {
+  console.log("update params", params);
+  const response = await api.patch(`update_lead/${lead_id}`, { ...params });
   return response.data;
 };

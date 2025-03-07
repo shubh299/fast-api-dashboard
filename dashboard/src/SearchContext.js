@@ -7,6 +7,7 @@ export const SearchContextProvider = ({ children }) => {
   const [engagedFilter, setEngagedFilter] = useState(null);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("ASC");
+  const [leadUpdated, setLeadUpdated] = useState(false);
 
   return (
     <SearchContext.Provider
@@ -19,6 +20,8 @@ export const SearchContextProvider = ({ children }) => {
         setSortColumn,
         sortOrder,
         setSortOrder,
+        leadUpdated,
+        setLeadUpdated,
       }}
     >
       {children}
