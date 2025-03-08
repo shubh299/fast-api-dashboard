@@ -1,0 +1,39 @@
+services:
+  react-dashboard:
+    build:
+      context: ./dashboard/.
+      args:
+        - REACT_APP_BACKEND_BASE_URL=http://localhost:8080
+    ports:
+      - "3000:80"
+    depends_on:
+      - fastapi_app
+
+  fastapi_app:
+    build: ./backend/.
+    container_name: fastapi_app
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://myuser:mypassword@db:5432/backend_db
+      FRONTEND_URL: http://localhost:3000
+      ENVIRONMENT: stage
+
+  db:
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: backend_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+volumes:
+  postgres_data:
