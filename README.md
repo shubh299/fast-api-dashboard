@@ -221,4 +221,16 @@ cd dashboard/
 docker compose up --build
 ```
 
+### Seeding Data
+
+1. Start backend server.
+2. Run the following commands in root folder of the repository. Python 3.11 is required.
+
+```
+pip install -r seed_requirements.txt
+python seeding_script.py <number_of_leads_to_populate> <add_backend_url>
+```
+
+The script will populate the leads specified in the command. For half of the leads, last contacted will also be populated.
+
 ---
