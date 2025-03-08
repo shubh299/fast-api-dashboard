@@ -1,3 +1,6 @@
 fastapi==0.115.11
 sqlalchemy==2.0.38
 psycopg2-binary==2.9.10
+uvicorn==0.34.0
+pydantic==2.10.6
+email_validator==2.2.0
