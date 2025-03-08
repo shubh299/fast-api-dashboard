@@ -173,3 +173,52 @@ axios
 ```
 
 ---
+
+## Start Backend and Frontend
+
+Pre-requisite: Docker is installed and running.
+
+### Starting both backend and frontend
+
+At the root of the repo, execute:
+
+```
+docker compose up --build
+```
+
+This starts backend server at port 8080 and frontend server at 3000 and a container hosting PostgreSQL DB at port 5432.
+
+- Change frontend server port: To change frontend server port, update `docker-compose.yaml` line 8. Also, update line 21 to allow requests from frontend. Note that docker image for front-end has to be built again as React does not take run-time environment variables.
+- Changing backend server port: To change backend server port, update `docker-compose.yaml` line 16. Also, update line 6 for updating backend URL in frontend.
+
+### Starting only backend server
+
+1. Go to `app/` folder.
+
+```
+cd app/
+```
+
+2. Start server and postgres containers:
+
+```
+docker compose up --build
+```
+
+`--build` is not need on subsequent runs as images are already built. To rebuild images before starting the server, either use `docker build` or use `--build` with `docker compose`.
+
+### Starting only frontend server
+
+1. Go to `dashboard/` folder.
+
+```
+cd dashboard/
+```
+
+2. Start server:
+
+```
+docker compose up --build
+```
+
+---
