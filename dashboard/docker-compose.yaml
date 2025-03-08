@@ -1,0 +1,8 @@
+services:
+  react-dashboard:
+    build:
+      context: .
+      args:
+        - REACT_APP_BACKEND_BASE_URL=http://localhost:8080
+    ports:
+      - "3000:80"

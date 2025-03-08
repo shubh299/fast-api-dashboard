@@ -8,7 +8,8 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://myuser:mypassword@db:5432/backend_db
-      ENVIRONMENT: "stage"
+      FRONTEND_URL: http://localhost:3000
+      ENVIRONMENT: stage
 
   db:
     image: postgres:17
