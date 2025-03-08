@@ -9,10 +9,11 @@ START_DATE = date(2025, 1, 1)
 END_DATE = date(2025, 3, 1)
 
 
-def seed_leads(num_leads: int):
+def seed_leads(num_leads: int, backend_host: str):
     fake = Faker()
-    add_lead_url = "http://127.0.0.1:8000/lead"
-    update_lead_url = "http://127.0.0.1:8000/update_lead/"
+    backend_host = backend_host.rstrip("/")
+    add_lead_url = f"{backend_host}/lead"
+    update_lead_url = f"{backend_host}/update_lead/"
 
     for i in range(num_leads):
         data = {
@@ -38,4 +39,5 @@ def seed_leads(num_leads: int):
 
 
 leads_count = int(sys.argv[1] or 147)  # defaulting to 147 count
-seed_leads(leads_count)
+backend_host = sys.argv[2] or "http://127.0.0.1:8000"
+seed_leads(leads_count, backend_host)
